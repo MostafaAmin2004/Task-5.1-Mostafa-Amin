@@ -53,37 +53,19 @@ export async function getDirectory(req, res, next) {
   } catch (err) {
     next(err);
   }
-}
-export async function searchInstructors(req, res, next) {
+}export async function searchInstructors(req, res, next) {
   try {
     const filter = {};
-    const allowedFields = ['name', 'department', 'role'];
 
-    const queryKeys = Object.keys(req.query);
-    for (const key of queryKeys) {
-      if (!allowedFields.includes(key)) {
-        return res.status(400).json({ message: `Invalid query parameter: ${key}` });
-      }
-    }
-
-    if (req.query.name) {
-      if (typeof req.query.name !== 'string') {
-        return res.status(400).json({ message: 'Invalid query parameter type for name' });
-      }
+    if (req.query.name && typeof req.query.name === 'string') {
       filter.name = { $regex: req.query.name, $options: 'i' };
     }
 
-    if (req.query.department) {
-      if (typeof req.query.department !== 'string') {
-        return res.status(400).json({ message: 'Invalid query parameter type for department' });
-      }
+    if (req.query.department && typeof req.query.department === 'string') {
       filter.department = req.query.department;
     }
 
-    if (req.query.role) {
-      if (typeof req.query.role !== 'string') {
-        return res.status(400).json({ message: 'Invalid query parameter type for role' });
-      }
+    if (req.query.role && typeof req.query.role === 'string') {
       filter.role = req.query.role;
     }
 
